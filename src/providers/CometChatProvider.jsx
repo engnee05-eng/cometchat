@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { CometChat } from '@cometchat/chat-sdk-javascript'
 import {
   CometChatUIKit,
   UIKitSettingsBuilder,
@@ -56,29 +57,65 @@ async function ensureInitialized(config) {
 async function ensureLoggedIn(uid) {
   const existing = await CometChatUIKit.getLoggedinUser()
 
+  let loggedInUser = null
+
   if (existing?.getUid?.() === uid) {
-    return existing
-  }
+    loggedInUser = existing
+  } else {
+    if (existing) {
+      await CometChatUIKit.logout()
+    }
 
-  if (existing) {
-    await CometChatUIKit.logout()
-  }
+    if (loginInFlight) {
+      await loginInFlight
+      const afterWait = await CometChatUIKit.getLoggedinUser()
+      if (afterWait?.getUid?.() === uid) {
+        loggedInUser = afterWait
+      }
+    }
 
-  if (loginInFlight) {
-    await loginInFlight
-    const afterWait = await CometChatUIKit.getLoggedinUser()
-    if (afterWait?.getUid?.() === uid) {
-      return afterWait
+    if (!loggedInUser) {
+      loginInFlight = CometChatUIKit.login(uid)
+      try {
+        loggedInUser = await loginInFlight
+      } finally {
+        loginInFlight = null
+      }
     }
   }
 
-  loginInFlight = CometChatUIKit.login(uid)
+  // Update profile name and Ghibli avatar if needed
+  if (loggedInUser) {
+    try {
+      const currentName = loggedInUser.getName()
+      const currentAvatar = loggedInUser.getAvatar()
 
-  try {
-    return await loginInFlight
-  } finally {
-    loginInFlight = null
+      const isUid1 = uid === 'cometchat-uid-1'
+      const targetName = isUid1 ? 'Priya' : 'Ananya'
+      const avatarFilename = isUid1 ? 'priya.png' : 'ananya.png'
+      const targetAvatar = window.location.origin + (import.meta.env.BASE_URL || '/') + avatarFilename
+
+      if (currentName !== targetName || currentAvatar !== targetAvatar) {
+        const userToUpdate = new CometChat.User(uid)
+        userToUpdate.setName(targetName)
+        userToUpdate.setAvatar(targetAvatar)
+
+        const config = getConfig()
+        await CometChat.updateUser(userToUpdate, config.authKey)
+        console.log(`Successfully updated profile for ${uid} to ${targetName}`)
+        
+        // Refresh the user object
+        const updatedUser = await CometChatUIKit.getLoggedinUser()
+        if (updatedUser) {
+          loggedInUser = updatedUser
+        }
+      }
+    } catch (updateErr) {
+      console.error('Failed to auto-update user profile:', updateErr)
+    }
   }
+
+  return loggedInUser
 }
 
 export function CometChatProvider({ children }) {
