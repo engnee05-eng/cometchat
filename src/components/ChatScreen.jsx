@@ -50,7 +50,7 @@ function ErrorState({ error }) {
 }
 
 export function ChatScreen() {
-  const { uid, peerUid, users, status, error, switchUser } =
+  const { peerUid, status, error } =
     useCometChatSession()
   const [activeConversation, setActiveConversation] = useState(null)
   const [directUser, setDirectUser] = useState(null)
@@ -112,24 +112,7 @@ export function ChatScreen() {
           <p className="eyebrow">CometChat React</p>
           <h1>Messages</h1>
         </div>
-        <div className="session-tools" aria-label="Choose test user">
-          {users.map((user) => (
-            <button
-              type="button"
-              key={user}
-              className={user === uid ? 'active' : ''}
-              onClick={() => switchUser(user)}
-            >
-              {user.replace('cometchat-', '')}
-            </button>
-          ))}
-        </div>
       </header>
-
-      <section className="tester-note" aria-live="polite">
-        Signed in as <strong>{uid}</strong>. For the two-window test, open an
-        incognito window at <code>/?uid={peerUid}</code>.
-      </section>
 
       <section className="messenger" aria-label="Messages">
         <aside className="conversation-list">
