@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "applied_at": "2026-06-07T16:48:27.647Z",
+  "framework": "reactjs",
+  "framework_version": null,
+  "experience": 0,
+  "experience_slug": "custom",
+  "placement": "route",
+  "placement_path": "/",
+  "template_version": "3.0.0-hand-written",
+  "sdk_version": null,
+  "credentials_source": "token-endpoint",
+  "env_var_prefix": "VITE_",
+  "files_owned": [
+    "src/providers/CometChatProvider.jsx",
+    "src/providers/cometchatContext.js",
+    "src/components/ChatScreen.jsx"
+  ],
+  "files_patched": [
+    {
+      "path": "src/App.jsx",
+      "patch_id": "src/App.jsx"
+    },
+    {
+      "path": "src/App.css",
+      "patch_id": "src/App.css"
+    },
+    {
+      "path": "src/index.css",
+      "patch_id": "src/index.css"
+    },
+    {
+      "path": "src/main.jsx",
+      "patch_id": "src/main.jsx"
+    },
+    {
+      "path": ".gitignore",
+      "patch_id": ".gitignore"
+    },
+    {
+      "path": ".env",
+      "patch_id": ".env"
+    },
+    {
+      "path": ".env.example",
+      "patch_id": ".env.example"
+    }
+  ],
+  "checksums": {
+    "src/providers/CometChatProvider.jsx": "e6ebcc15ad21d9b20f5d7ddb2e092e3296736e5e46340f4095a108dee366ad16",
+    "src/providers/cometchatContext.js": "00ba58bcb4ff13e9e75588578e4a995f0d2b23848569eab758eb15c9e08cd921",
+    "src/components/ChatScreen.jsx": "195eaf35f89351bc875f776edd6475aeaead20faac1d58b1917918da73ab93b5"
+  }
+}
