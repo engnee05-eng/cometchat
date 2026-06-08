@@ -36,9 +36,9 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          VITE_COMETCHAT_APP_ID: ${{ secrets.VITE_COMETCHAT_APP_ID }}
-          VITE_COMETCHAT_REGION: ${{ secrets.VITE_COMETCHAT_REGION }}
-          VITE_COMETCHAT_AUTH_KEY: ${{ secrets.VITE_COMETCHAT_AUTH_KEY }}
+          VITE_COMETCHAT_APP_ID: 167982196b4e0ba45
+          VITE_COMETCHAT_REGION: in
+          VITE_COMETCHAT_AUTH_KEY: f3a5846bde2854874dfbe90e5dedafc413afa871
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
